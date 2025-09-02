@@ -1,122 +1,17 @@
- 📚 StudyMate Pro
-
-**StudyMate Pro** is an AI-powered academic assistant that allows students and researchers to interact with their study materials (PDFs such as textbooks, lecture notes, and research papers) in a conversational, question-answering format.
-
-Instead of searching through long PDF documents, just upload your files and ask questions in plain English. StudyMate Pro uses OpenAI's GPT model to return relevant, accurate, and source-referenced answers.
-
----
-
-## ✨ Features
-
-- 📂 Upload and index one or more PDF files
-- 🤖 Ask natural-language questions and get intelligent, contextual answers
-- 📄 Answers include source references (file + page number)
-- 💾 Embedding cache system for faster performance
-- 📝 Auto-generated summaries of study materials
-- 💬 Export Q&A history to a text file
-- 🧱 Built with modular, maintainable Python code
+# Core dependencies
+PyPDF2==3.0.1            # Extract text from PDF files
+openai==1.30.1           # OpenAI API access for GPT-based LLMs
 
 
 
-## 🚀 Getting Started
-
-### 1. Clone the Repository
-
-bash
-git clone https://github.com/yourusername/studymate-pro.git
-cd studymate-pro
-
-2. Install Dependencies
-
-bash
-Copy code
-pip install -r requirements.txt
-
-3. Set Up Your OpenAI API Key
-You’ll need an OpenAI API key. Create a .env file or use an environment variable:
-
-bash
-Copy code
-export OPENAI_API_KEY="sk-your-api-key-here"
-Or on Windows (CMD):
-
-cmd
-Copy code
-set OPENAI_API_KEY=sk-your-api-key-here
-🧠 Usage
-Run the main script:
-
-bash
-Copy code
-python studymate_pro.py
+# LangChain ecosystem
+langchain==0.2.1         # Framework for LLM workflows
+faiss-cpu==1.7.4         # Vector similarity search engine
+tiktoken==0.7.0          # OpenAI tokenizer
 
 
-Example
-text
-Copy code
-📚 Welcome to StudyMate Pro!
-Enter PDF paths (comma-separated): research.pdf, notes.pdf
 
-✅ Embeddings cached for: research.pdf, notes.pdf
-
-Options:
-  [1] Ask a question
-  [2] Summarize PDFs
-  [3] Export Q&A history
-  [4] Exit
-
-❓ Ask your question: What is the main concept of quantum entanglement?
-
-🧠 Answer:
-Quantum entanglement is a phenomenon in which particles remain connected...
-
-📎 Sources:
-research.pdf - Page 5
-📁 Project Structure
-bash
-Copy code
-studymate-pro/
-│
-├── studymate_pro.py        # Main CLI script
-├── requirements.txt        # Python dependencies
-├── README.md               # Project documentation
-└── embedding_cache/        # Cached vector databases
-🔒 Security
-Your API key is never stored or uploaded
-
-Sensitive information stays local on your machine
-
-✅ Recommended Use Cases
-Students preparing for exams
-
-Researchers summarizing papers
-
-Professionals extracting insights from technical docs
-
-💡 Future Roadmap
- Web-based interface (Streamlit or Gradio)
-
- Drag-and-drop PDF support
-
- Chat memory and follow-up question support
-
- Page-specific citations with content preview
-
-🤝 Contributing
-Contributions are welcome! To contribute:
-
-Fork the repo
-
-Create a new branch
-
-Commit your changes
-
-Open a pull request
-
-📄 License
-This project is open-source and available under the MIT License.
-
-🙋‍♂️ Author
-Created by Ruthish Kumar S — feedback and stars are welcome!
-
-
+# (Optional) Environment handling
+python-dotenv==1.0.1     # Load API key from .env files (if needed)
+✅ .env (optional but recommended)
+If you don't want to export your key every time, create a .env file:
