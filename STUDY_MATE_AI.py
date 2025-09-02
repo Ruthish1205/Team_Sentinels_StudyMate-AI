@@ -1,0 +1,73 @@
+import os
+import PyPDF2
+import openai
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import FAISS
+from langchain.chains.question_answering import load_qa_chain
+from langchain.llms import OpenAI
+from langchain.docstore.document import Document
+
+
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Set your API key as environment variable
+
+def extract_text_from_pdf(file_path):
+    """Extracts and returns text from a PDF file."""
+    pdf_reader = PyPDF2.PdfReader(file_path)
+    text = ""
+    for page_num, page in enumerate(pdf_reader.pages):
+        page_text = page.extract_text()
+        if page_text:
+            text += f"\n--- Page {page_num + 1} ---\n{page_text}"
+    return text
+
+def split_text(text):
+    """Splits the text into smaller chunks for embedding."""
+    splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+    return splitter.create_documents([text])
+
+def create_vector_store(documents):
+    """Creates a FAISS vector store from documents."""
+    embeddings = OpenAIEmbeddings()
+    vector_store = FAISS.from_documents(documents, embeddings)
+    return vector_store
+
+
+def answer_question(vector_store, query):
+    """Retrieves context and generates an answer using OpenAI."""
+    retriever = vector_store.as_retriever()
+    relevant_docs = retriever.get_relevant_documents(query)
+
+    llm = OpenAI(temperature=0)
+    qa_chain = load_qa_chain(llm, chain_type="stuff")
+    result = qa_chain.run(input_documents=relevant_docs, question=query)
+    return result
+
+def main():
+    print("🔍 Welcome to StudyMate!")
+    pdf_paths = input("Enter PDF file paths (comma-separated): ").split(',')
+
+    full_text = ""
+    for path in pdf_paths:
+        path = path.strip()
+        if not os.path.exists(path):
+            print(f"❌ File not found: {path}")
+            return
+        print(f"📄 Loading: {path}")
+        full_text += extract_text_from_pdf(path)
+
+    print("✅ PDFs loaded and text extracted.")
+    print("📚 Splitting and indexing documents...")
+    documents = split_text(full_text)
+    vector_store = create_vector_store(documents)
+    print("✅ Ready to answer your questions!")
+
+    while True:
+        user_query = input("\nAsk a question (or type 'exit' to quit): ")
+        if user_query.lower() in ['exit', 'quit']:
+            break
+        answer = answer_question(vector_store, user_query)
+        print(f"\n🧠 Answer: {answer}")
+
+if __name__ == "__main__":
+    main()
