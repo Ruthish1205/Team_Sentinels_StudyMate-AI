@@ -3,6 +3,7 @@ openai==1.30.1
 faiss-cpu==1.7.4
 langchain==0.2.1
 tiktoken==0.7.0
+
 🔎 Explanation of Packages
 Package	Purpose
 PyPDF2	Extracts text from PDF files
@@ -11,9 +12,9 @@ faiss-cpu	Enables local vector similarity search
 langchain	Manages LLM chains, document splitting, and retrieval
 tiktoken	Tokenizer used by OpenAI models, required by LangChain and OpenAI SDK
 
+
 ✅ How to Install
 Run the following command in your project folder:
 
 bash
-Copy code
 pip install -r requirements.txt
